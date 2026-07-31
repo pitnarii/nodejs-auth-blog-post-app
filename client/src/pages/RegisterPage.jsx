@@ -13,7 +13,7 @@ function RegisterPage() {
     // 🐨 Todo: Exercise #2
     // นำ Function `register` ใน AuthContext มา Execute ใน Event Handler ตรงนี้
     register({ username, password, firstName, lastName }); //register user with username, password, firstName, lastName
-    //รียก register(...) จาก AuthContext โดยส่ง object นั้นเข้าไป
+    //เรียก register(...) จาก AuthContext โดยส่ง object นั้นเข้าไป
 
   };
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
@@ -11,12 +13,20 @@ function AuthProvider(props) {
   });
   const navigate = useNavigate();
 
-  const login = () => {
+  const login = async (data) => {
     // 🐨 Todo: Exercise #4
     //  ให้เขียน Logic ของ Function `login` ตรงนี้
     //  Function `login` ทำหน้าที่สร้าง Request ไปที่ API POST /login
     //  ที่สร้างไว้ด้านบนพร้อมกับ Body ที่กำหนดไว้ในตารางที่ออกแบบไว้
-    await axios.post("http://localhost:4000/auth/login", data);
+    const response = await axios.post("http://localhost:4000/auth/login", data);
+    const token = response.data.token;    
+    localStorage.setItem("token", token); //save token to local storage localStorage = จำว่า login อยู่ (refresh หน้าแล้วยัง login)
+    const userDatafromToken = jwtDecode(token); //decode token to get user data
+    //state.user = ใช้แสดงข้อมูล user ใน UI ทันทีโดยไม่ต้องเรียก API อีก
+    setState({
+      ...state, //เก็บค่าเดิม (loading, error)
+      user: userDatafromToken, //ใส่ข้อมูล user จาก token
+    });
     navigate("/"); //navigate user to home page
   };
 
@@ -35,6 +45,11 @@ function AuthProvider(props) {
     // 🐨 Todo: Exercise #7
     //  ให้เขียน Logic ของ Function `logout` ตรงนี้
     //  Function logout ทำหน้าที่ในการลบ JWT Token ออกจาก Local Storage
+    localStorage.removeItem("token");
+    setState({
+      ...state,
+      user: null,
+    });
   };
 
   const isAuthenticated = Boolean(localStorage.getItem("token"));
