@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const AuthContext = React.createContext();
 
 function AuthProvider(props) {
@@ -8,20 +9,27 @@ function AuthProvider(props) {
     error: null,
     user: null,
   });
+  const navigate = useNavigate();
 
   const login = () => {
     // 🐨 Todo: Exercise #4
     //  ให้เขียน Logic ของ Function `login` ตรงนี้
     //  Function `login` ทำหน้าที่สร้าง Request ไปที่ API POST /login
     //  ที่สร้างไว้ด้านบนพร้อมกับ Body ที่กำหนดไว้ในตารางที่ออกแบบไว้
+    await axios.post("http://localhost:4000/auth/login", data);
+    navigate("/"); //navigate user to home page
   };
 
-  const register = () => {
+  const register = async (data) => {
     // 🐨 Todo: Exercise #2
     //  ให้เขียน Logic ของ Function `register` ตรงนี้
     //  Function register ทำหน้าที่สร้าง Request ไปที่ API POST /register
     //  ที่สร้างไว้ด้านบนพร้อมกับ Body ที่กำหนดไว้ในตารางที่ออกแบบไว้
+      await axios.post("http://localhost:4000/auth/register", data);
+      navigate("/login"); //navigate user to log-in page
+    
   };
+// (register)สร้างฟังก์ชันนี้เพื่อให้หน้า Register สมัคร user ผ่าน API แล้ว redirect ไป login โดยไม่ต้องเขียน logic ซ้ำในหลาย component
 
   const logout = () => {
     // 🐨 Todo: Exercise #7

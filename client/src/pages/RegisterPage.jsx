@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { useAuth } from "../contexts/authentication";
 
 function RegisterPage() {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
-
+  const { register } = useAuth(); //เข้าถึง register(...) จาก AuthContext โดยใช้ useAuth() hook
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     // 🐨 Todo: Exercise #2
     // นำ Function `register` ใน AuthContext มา Execute ใน Event Handler ตรงนี้
+    register({ username, password, firstName, lastName }); //register user with username, password, firstName, lastName
+    //รียก register(...) จาก AuthContext โดยส่ง object นั้นเข้าไป
+
   };
 
   return (
